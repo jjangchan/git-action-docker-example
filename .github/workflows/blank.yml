@@ -28,9 +28,3 @@ jobs:
           make
           cd unittest/
           ./unittest
-
-        - name: Build Docker
-         run: |
-          pwd
-          ls     
-     
