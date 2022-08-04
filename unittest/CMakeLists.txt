@@ -1,5 +1,5 @@
 project(unittest)
-add_subdirectory(lib)
+add_subdirectory(googletest)
 
 if(APPLE)
     message(STATUS ">>> OS: APPLE")
