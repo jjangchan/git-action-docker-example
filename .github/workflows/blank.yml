@@ -26,5 +26,3 @@ jobs:
           cd build/
           cmake ..
           make
-          cd unittest/
-          ./unittest
