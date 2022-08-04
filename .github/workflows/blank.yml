@@ -26,3 +26,9 @@ jobs:
           cd build/
           cmake ..
           make
+          cd unittest/
+          ./unittest 
+      
+      - name: Run...
+        run: |
+          ls

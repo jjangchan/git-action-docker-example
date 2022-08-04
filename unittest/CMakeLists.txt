@@ -1,5 +1,5 @@
 project(unittest)
-add_subdirectory(googletest)
+add_subdirectory(lib)
 
 if(APPLE)
     message(STATUS ">>> OS: APPLE")
@@ -15,6 +15,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 SET(INCDIR ../../include)
 include_directories(${INCDIR})
+include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 link_directories(/usr/local/lib)
 link_directories(/usr/local/lib64)
 

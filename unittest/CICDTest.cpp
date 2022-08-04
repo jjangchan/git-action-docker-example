@@ -51,9 +51,6 @@ TEST_F(CICDTest, PathTest) {
     server1.start_server();
 
     std::string res_str = CurlHandler::url_get_json(url);
-    ASSERT_EQ(res_str, req_str);
+    ASSERT_EQ(res_str+"111", req_str);
     server1.stop_server();
-    if(res_str == req_str){ // 실패 덤프 남기기........
-        assert(0);
-    }
 }
