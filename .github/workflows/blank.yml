@@ -24,7 +24,7 @@ jobs:
         run: |
           echo test
 
-    docker:
+  docker:
       name: Docker
       needs: build
       runs-on: ubuntu-20.04
