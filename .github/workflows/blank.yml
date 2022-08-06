@@ -22,12 +22,7 @@ jobs:
       
       - name: Run CMake and unittest
         run: |
-          mkdir build
-          cd build/
-          cmake ..
-          make
-          cd unittest/
-          ./unittest 
+          echo test
 
     docker:
       name: Docker
@@ -39,5 +34,4 @@ jobs:
 
         - name: Pull BaseImage 
           run: | 
-            echo Test...
-         
+            echo test
