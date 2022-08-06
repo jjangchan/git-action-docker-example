@@ -1,3 +1,15 @@
+.idea
+.git
+.gitignore
+.github
+.dockerignore
+Dockerfile
+*.md
+*.sh
+*.yml
+scripts
+.Rhistory
+
 # Prerequisites
 *.d
 
@@ -41,4 +53,4 @@ cmake-build-release/*
 cmake-build-debug/*
 cmake_install.cmake
 .idea/*
-Build/*
+build/*

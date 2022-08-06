@@ -9,7 +9,7 @@ void example(RestServer& server1){
             "total", [&](http_request req, std::vector<std::string>& v) {
                 LoadData& data = LoadData::get_instance();
                 std::string id = v[3];
-                unsigned long long total = data.get_total().get(id);
+                uint64_t total = data.get_total().get(id);
                 web::json::value body = web::json::value::object();
 
                 body["client_id"] = web::json::value::string(U(id));

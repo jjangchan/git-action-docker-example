@@ -62,22 +62,25 @@ else()
 endif()
 ######################################################################
 
+if(APPLE)
+    ######################################################################
+    # Open SSL Package
+    set(OpenSSL_INCLUDE /usr/local/opt/openssl/include)
+    set(OpenSSL_LIBRARIES
+            /usr/local/opt/openssl/lib/libcrypto.dylib
+            /usr/local/opt/openssl/lib/libssl.dylib)
+    include_directories(${OpenSSL_INCLUDE})
+    ######################################################################
 
-######################################################################
-# Open SSL Package
-set(OpenSSL_INCLUDE /usr/local/opt/openssl/include)
-set(OpenSSL_LIBRARIES
-        /usr/local/opt/openssl/lib/libcrypto.dylib
-        /usr/local/opt/openssl/lib/libssl.dylib)
-include_directories(${OpenSSL_INCLUDE})
-######################################################################
-
-######################################################################
-# Microsoft RESTful API Package (Casablanca)
-set(CppREST_INCLUDE /usr/local/opt/cpprestsdk/include)
-set(CppREST_LIBRARIES /usr/local/opt/cpprestsdk/lib/libcpprest.dylib)
-include_directories(${CppREST_INCLUDE})
-######################################################################
+    ######################################################################
+    # Microsoft RESTful API Package (Casablanca)
+    set(CppREST_INCLUDE /usr/local/opt/cpprestsdk/include)
+    set(CppREST_LIBRARIES /usr/local/opt/cpprestsdk/lib/libcpprest.dylib)
+    include_directories(${CppREST_INCLUDE})
+    ######################################################################
+elseif(LINUX OR UNIX)
+    find_package(cpprestsdk REQUIRED)
+endif()
 
 ######################################################################
 # CURL
@@ -105,13 +108,23 @@ set(SOURCE_FILES
         src/LoadData.h
         src/RestServer.h
         src/RestHandler.h)
-set(LINK_LIBRARIES
-        ${OpenSSL_LIBRARIES}
-        ${CppREST_LIBRARIES}
-        ${Boost_LIBRARIES}
-        ${CURL_LIBRARIES}
-        Threads::Threads
-        )
+if(APPLE)
+    set(LINK_LIBRARIES
+            ${OpenSSL_LIBRARIES}
+            ${CppREST_LIBRARIES}
+            ${Boost_LIBRARIES}
+            ${CURL_LIBRARIES}
+            Threads::Threads
+            )
+elseif(LINUX OR UNIX)
+    set(LINK_LIBRARIES
+            cpprestsdk::cpprest
+            ${Boost_LIBRARIES}
+            ${CURL_LIBRARIES}
+            Threads::Threads
+            )
+endif()
+
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 target_link_libraries(${PROJECT_NAME} ${LINK_LIBRARIES})
 add_subdirectory(unittest)
