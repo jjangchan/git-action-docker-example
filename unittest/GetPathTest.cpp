@@ -34,6 +34,7 @@ public:
     }
 };
 
+// 보낸 path 랑 curl 로 받은 path 가 일치하는 않는지 확인하는 유닛테스트
 TEST_F(GetPathTest, PathTest) {
     std::string url = "http://localhost:8090";
     RestServer server1(url, 10);
