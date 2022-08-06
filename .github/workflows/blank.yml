@@ -39,5 +39,5 @@ jobs:
 
         - name: Pull BaseImage 
           run: | 
-            docker pull jjangchan/cpp-tool:latest
-            docker images
+            echo Test...
+         
