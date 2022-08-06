@@ -7,7 +7,6 @@ on:
     branches: [ "main" ]
 
 jobs:
-
   build:
     name: Build
     runs-on: macos-12
@@ -29,3 +28,16 @@ jobs:
           make
           cd unittest/
           ./unittest 
+
+    docker:
+      name: docker
+      needs: build
+      runs-on: ubuntu-20.04
+
+      steps:
+        - uses: actions/checkout@v3
+
+        - name: Pull BaseImage 
+          run: | 
+            docker pull jjangchan/cpp-tool:latest
+            docker images
