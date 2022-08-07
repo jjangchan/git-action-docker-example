@@ -125,7 +125,7 @@ public:
                 int current = *iter;
                 if(step != current){ // step 이랑 일치하지 않으면
                     while(step < current){ //빈 고유번호 담기
-                        //miss.push_back(step);
+                        miss.push_back(step);
                         step++;
                     }
                 }

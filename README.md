@@ -14,25 +14,38 @@
 
 
 
-## 코드 실행
+## 실행 방법
 
-
+### docker image pull and run
 
 ```shell
-$ cd /{code directory}/qraft-exchange-api/
-$ mkdir build
-$ cd build/
-$ cmake ..
-$ make 
+$ docker pull jjangchan/axe-test-web-server:390c11776738d78263b105763f10594e1667d64f
+$ docker run -p 8091:8091 -it --name jjangchan-test-server jjangchan/axe-test-web-server:390c11776738d78263b105763f10594e1667d64f /bin/bash
 ```
 
-서버 실행은 아래와 같습니다.
+### Build (camke and make)
+
+도커 내부 접속후..
+
+```shell
+$ cd /source/
+$ mkdir build
+$ cd build
+$ cmake ..
+$ make
+```
+
+### 서버 실행
+
+host : 0.0.0.0 , port : 8091
 
 ```shell
 $ ./qraft_exchange_api
 ```
 
-유닛 테스트 실행은 아래와 같습니다.
+
+
+### 유닛 테스트 실행
 
 ```shell
 $ cd unittest/
@@ -66,7 +79,7 @@ $ ./unittest
 └─ unittest
         ├─ GetPathTest.cpp : path가 잘 전달되는지 확인하는 테스트 코드
         └─ CICDTest.cpp : 문제2-1에 결과값이 잘 나오는지 확인하는 테스트 코드
-        └─ FileFormat.cpp : 문제1-5 테스트 파일
+        └─ FileFormat.cpp : 문제1-5 테스트 코드
 ```
 
 
