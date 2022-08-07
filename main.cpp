@@ -128,7 +128,7 @@ int main(){
     LoadData::get_instance().set_path("../datas/", "2022-08-02");
     LoadData::get_instance().init();
 
-    RestServer server1("http://localhost:8090", 10);
+    RestServer server1("http://192.168.56.1:8090", 10);
     example(server1); // 예제문제 등록하는 함수
     server1.start_server();
 

@@ -44,7 +44,7 @@ $ ./unittest
 ## 디렉터리 정보
 
 ```shell
-/{code directory}/qraft-exchange-api
+/source./qraft-exchange-api
 │ 
 ├─ main.cpp : 서버 가동 되는 메인함수
 │
