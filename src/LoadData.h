@@ -16,6 +16,17 @@
 #include <j-data-structure/HashMap.h>
 #include <j-data-structure/Set.h>
 
+class current_date{
+public:
+    static std::string get_current_date(){
+        time_t t = std::time(nullptr);
+        auto tm = *std::localtime(&t);
+        std::ostringstream oss;
+        oss << std::put_time(&tm, "%Y-%m-%d");
+        return oss.str();
+    }
+};
+
 class LoadData{
 private:
     /**
@@ -65,11 +76,12 @@ public:
         try{
             for(const auto& file : std::filesystem::directory_iterator(path+date)){
                 std::ifstream in(file.path().c_str());
+                std::stringstream buffer;
+                buffer << in.rdbuf();
                 std::string str;
-                while(in){
-                    getline(in, str);
-                    if(str.size() != 28 && str != ""){
-                        BOOST_LOG_TRIVIAL(error) << "invalid log length format, length = "+ std::to_string(str.size());
+                while(getline(buffer, str, '\n')){
+                    if(str.size() != 28){
+                        BOOST_LOG_TRIVIAL(error) << "invalid log length format, length = "+ std::to_string(str.size())+", log = "+ str;
                         return false;
                     }
 
@@ -95,6 +107,7 @@ public:
                             BOOST_LOG_TRIVIAL(warning) << "unique number is less than 0, log = "+ str;
                         }
                     }
+
                 }
             }
 
@@ -112,7 +125,7 @@ public:
                 int current = *iter;
                 if(step != current){ // step 이랑 일치하지 않으면
                     while(step < current){ //빈 고유번호 담기
-                        miss.push_back(step);
+                        //miss.push_back(step);
                         step++;
                     }
                 }
@@ -136,20 +149,13 @@ public:
     Vector<int>& get_miss(){return miss;};
     SET::Set<std::string>& get_clients(){return clients;};
 
-private:
-    std::string get_date(){
-        time_t t = std::time(nullptr);
-        auto tm = *std::localtime(&t);
-        std::ostringstream oss;
-        oss << std::put_time(&tm, "%Y-%m-%d");
-        return oss.str();
-    }
 
 public:
     inline static LoadData &get_instance(){
         static LoadData instance;
         return instance;
     }
+
 
     void set_path(const std::string path, const std::string date){
         // 특정 날짜 data 가져오기

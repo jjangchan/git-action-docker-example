@@ -20,7 +20,7 @@ using namespace web::http::experimental::listener;
 using namespace utility;
 
 enum {
-    ERROR_CODE_1, // -> 요청되는 api가 없는 에러 코드
+    ERROR_CODE_1, // -> 요청되는 api 형식이 잘못된 에러 코드
     ERROR_CODE_2, // -> api/range/min/max -> min 값이 정수가 아닐때 나는 에러 코드
     ERROR_CODE_3, // -> api/range/min/max -> max 값이 정수가 아닐떄 나는 에러 코드
     ERROR_CODE_4  // -> api/range/min/max -> min 값이 max값 보다 크거나 같은때 나는 에러 코드
@@ -57,7 +57,7 @@ private:
         //req.reply(status_codes::OK, path);
 
         if(v[1] != "api"){
-            req.reply(status_codes::NotFound, "invalid path\n");
+            req.reply(status_codes::NotFound, error_str+std::to_string(ERROR_CODE_1)+"\n");
             BOOST_LOG_TRIVIAL(info) << "invalid path, path : "+req.request_uri().path();
             return;
         }
@@ -66,7 +66,7 @@ private:
         if(work_call_back_func.count(v[2])){ // api가 있다면...
             work_call_back_func[v[2]](req, v);
         }else{
-            req.reply(status_codes::NotFound, "invalid api\n");
+            req.reply(status_codes::NotFound, error_str+std::to_string(ERROR_CODE_1)+"\n");
             BOOST_LOG_TRIVIAL(info) << "not contain key, requested key : "+v[2];
         }
         work_count--;
