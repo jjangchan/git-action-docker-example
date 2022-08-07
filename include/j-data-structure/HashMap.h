@@ -95,6 +95,9 @@ public:
         int code = hash(key);
         linkedlist::Node<K,V>* node = list[code]->get_head();
         node = find_key(key, node);
+        if(node == nullptr){
+            return 0;
+        }
         return node->value;
     }
 

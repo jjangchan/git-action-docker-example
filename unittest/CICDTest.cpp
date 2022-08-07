@@ -51,6 +51,6 @@ TEST_F(CICDTest, PathTest) {
     server1.start_server();
 
     std::string res_str = CurlHandler::url_get_json(url);
-    ASSERT_EQ(res_str, req_str); // assert가 발생하면 git action 다음 스텝 run을 가지 못한다. 따라서 도커 이미지 배포가 불가능
+    ASSERT_EQ(res_str+"s", req_str); // assert가 발생하면 git action 다음 스텝 run을 가지 못한다. 따라서 도커 이미지 배포가 불가능
     server1.stop_server();
 }

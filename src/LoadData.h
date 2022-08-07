@@ -35,10 +35,10 @@ private:
     **/
 
     // exam) api/total, api/range
-    // key 값 기준으로 검색해야 하므로, 중복을 허용 하지 않고 최대한 빠르게 검색하는 자료구조는 map(O(logN)) 또는 unordered_map(O(1)) 이여서 선택
+    // key 값 기준으로 검색해야 하므로, 중복을 허용 하지 않고 최대한 빠르게 검색하는 자료구조는 map(O(logN)) 또는 unordered_map(O(1)) 이여서 hashp_map 선택
     // 한 고객이 최대 담을수 있는 금액은 아래와 같다
-    // 최대 고유 번호, 체결량, 체결금액 : 999,999 , 최대 파일 생성 개수 : 6
-    // 999,999 * 999,999 * 999,999 * 6 는 2^64-1 보다 작다, 따라서 max 값을 unsigned long long 으로 표현 가능 하다?
+    // 최대 고유 번호, 체결량, 체결금액 : 999,999 , 최대 파일 생성 개수 : 6 (9-10, 10-11, 11-12, 12-13, 13-14, 14-15, 15-16)
+    // 999,999 * 999,999 * 999,999 * 6 는 2^64-1 보다 작다, 따라서 total max 값을 unsigned long long 으로 표현 가능 하다?
     // 만약 2^64-1 범위를 넘는 경우가 있으면 value 타입을 vector로 변경해야한다.
     HashMap<int, unsigned long long> range; // -> std::map, 정렬되어있는상태
     HashMap<std::string, unsigned long long> total;
@@ -48,25 +48,19 @@ private:
     SET::Set<std::string> clients;
     SET::Set<int> u_nums; // 최대 고유 번호 -> 999999
     Vector<int> miss;
+    std::string path;
+    std::string date;
 
     LoadData(){}
     ~LoadData(){}
 
 
 public:
-    inline static LoadData &get_instance(){
-        static LoadData instance;
-        return instance;
-    }
-    void init(){ // 오후 5시 돠면 init() 함수로 호출해서 log data를 초기화 해야함..
-        std::string path;
-        std::string date;
+
+    bool init(){ // 오후 5시 돠면 init() 함수로 호출해서 log를 담는 자료구조를 초기화 해야함..
         /** 현재 날짜 조회해서 해당 data 가져오기
         date = get_date();
         **/
-        // 특정 날짜 data 가져오기
-        path = "../datas/";
-        date = "2022-08-02";
         // get file list
         try{
             for(const auto& file : std::filesystem::directory_iterator(path+date)){
@@ -74,6 +68,17 @@ public:
                 std::string str;
                 while(in){
                     getline(in, str);
+                    if(str.size() != 28 && str != ""){
+                        BOOST_LOG_TRIVIAL(error) << "invalid log length format, length = "+ std::to_string(str.size());
+                        return false;
+                    }
+
+                    for(int i = 10; i < 28; i++){
+                        if(!std::isdigit(str[i])){
+                            BOOST_LOG_TRIVIAL(error) << "invalid log format(not int), log = "+str;
+                            return false;
+                        }
+                    }
                     if(str.size() == 28){
                         std::string id = str.substr(0,4);
                         std::string stocks_code = str.substr(4,6);
@@ -84,14 +89,20 @@ public:
                         total.put(id, cal);
                         range.put(price, volume);
                         clients.insert(id);
-                        u_nums.insert(unique_num);
+                        if(unique_num >= 1){
+                            u_nums.insert(unique_num);
+                        }else{
+                            BOOST_LOG_TRIVIAL(warning) << "unique number is less than 0, log = "+ str;
+                        }
                     }
                 }
             }
 
+            /**
             for(SET::Set<std::string>::Iterator iter = clients.begin(); iter != clients.end(); ++iter){
-                std::cout << *iter << ", total : " << total.get(*iter) << std::endl;
+                BOOST_LOG_TRIVIAL(trace) << *iter << ", total : " << total.get(*iter);
             }
+             **/
 
 
             // 빈고유번호 찾기
@@ -107,20 +118,19 @@ public:
                 }
             }
 
+            /**
             for(int i = 0; i < miss.size(); i++){
                 std::cout << miss[i] << " ";
             }
             std::cout << std::endl;
+            **/
+            return true;
         } catch (std::exception& e){
             BOOST_LOG_TRIVIAL(warning) << "empty directory , path : " + path+date;
+            return false;
         }
-
-
     }
 
-    //const Vector<std::string>& get_clients(){return clients;};
-    //const Vector<int>& get_miss(){return miss;};
-    //const Vector<int>& get_volumes(){return volumes;}
     HashMap<int, unsigned long long>& get_range(){return range;}; // -> std::map, 정렬되어있는상태
     HashMap<std::string, unsigned long long>& get_total(){return total;};
     Vector<int>& get_miss(){return miss;};
@@ -134,6 +144,22 @@ private:
         oss << std::put_time(&tm, "%Y-%m-%d");
         return oss.str();
     }
+
+public:
+    inline static LoadData &get_instance(){
+        static LoadData instance;
+        return instance;
+    }
+
+    void set_path(const std::string path, const std::string date){
+        // 특정 날짜 data 가져오기
+        //path = "../datas/";
+        //date = "2022-08-02";
+        this->path = path;
+        this->date = date;
+        BOOST_LOG_TRIVIAL(trace) << this->path+this->date;
+    }
+
 };
 
 #endif //QRAFT_EXCHANGE_API_LOADDATA_H

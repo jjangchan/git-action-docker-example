@@ -52,7 +52,7 @@ void example(RestServer& server1){
 
                 int min = atoi(v[3].c_str());
                 int max = atoi(v[4].c_str());
-                if(min >= max){
+                if(min >= max){ // N이 M보다 같거나 크다
                     req.reply(status_codes::NotFound, "max must be greater than min !\n");
                     BOOST_LOG_TRIVIAL(trace) << "max must be greater than min";
                     return;
@@ -62,7 +62,7 @@ void example(RestServer& server1){
                 unsigned long long v_sum = 0;
                 for(HashMap<int, unsigned long long>::Iterator iter = data.get_range().begin(); iter != data.get_range().begin(); ++iter){
                     int price = iter.get_key();
-                    if(price >= min && price < max){
+                    if(price >= min && price < max){ // N 보다 같거나 크고 M보다 작다
                         unsigned long long volume = iter.get_value();
                         volumes.push_back(volume);
                         v_sum +=  volume;
@@ -105,7 +105,9 @@ int main(){
     BoostLogger::get_instance().set_filter(boost::log::trivial::info);
     BOOST_LOG_TRIVIAL(trace) << "BoostLogger is initialized";
 
+    LoadData::get_instance().set_path("../datas/", "2022-08-02");
     LoadData::get_instance().init();
+
     RestServer server1("http://localhost:8090", 10);
     example(server1); // 예제문제 등록하는 함수
     server1.start_server();

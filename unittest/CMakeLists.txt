@@ -105,7 +105,8 @@ find_package(Threads REQUIRED)
 # Build the core library and executable
 set(SOURCE_FILES
         GetPathTest.cpp
-        CICDTest.cpp)
+        CICDTest.cpp
+        FileFormatTest.cpp)
 if(APPLE)
     set(LINK_LIBRARIES
             ${OpenSSL_LIBRARIES}
