@@ -164,7 +164,7 @@ namespace SET {
 
         Iterator begin(){
             T* data = new T[this->length()];
-            this->inorder(data);
+            //this->inorder(data);
             Iterator temp(data, this->length());
             delete[] data;
             return temp;
@@ -186,7 +186,27 @@ namespace SET {
                 Node<T> *node = new Node<T>(key, nullptr, nullptr);  // 새로운 key를 가지는 node 생성
                 this->set_root(node);
             } else {
-                insert_recur(this->get_root(), key);
+                //insert_recur(this->get_root(), key);
+                Node<T> *new_node = new Node<T>(key, nullptr, nullptr);
+                Node<T> *current_node = this->get_root();
+                while(true){
+                    if(current_node->get_data() == key) break;
+                    if(current_node->get_data() < key){
+                        if(current_node->get_left() == nullptr){
+                            current_node->set_left(new_node);
+                            break;
+                        }
+                        current_node = current_node->get_left();
+                    }else{
+                        if(current_node->get_right() == nullptr){
+                            current_node->set_right(new_node);
+                            break;
+                        }
+                        current_node = current_node->get_right();
+                    }
+
+                }
+
             }
         }
 

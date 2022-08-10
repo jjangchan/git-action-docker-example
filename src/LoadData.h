@@ -11,10 +11,10 @@
 #include <ctime>
 #include <filesystem>
 #include <fstream>
+#include <set>
+#include <map>
+#include <vector>
 #include <j-boost-logger/BoostLogger.h>
-#include <j-data-structure/Vector.h>
-#include <j-data-structure/HashMap.h>
-#include <j-data-structure/Set.h>
 
 class current_date{
 public:
@@ -49,16 +49,16 @@ private:
     // key 값 기준으로 검색해야 하므로, 중복을 허용 하지 않고 최대한 빠르게 검색하는 자료구조는 map(O(logN)) 또는 unordered_map(O(1)) 이여서 hashp_map 선택
     // 한 고객이 최대 담을수 있는 금액은 아래와 같다
     // 최대 고유 번호, 체결량, 체결금액 : 999,999 , 최대 파일 생성 개수 : 6 (9-10, 10-11, 11-12, 12-13, 13-14, 14-15, 15-16)
-    // 999,999 * 999,999 * 999,999 * 6 는 2^64-1 보다 작다, 따라서 total max 값을 unsigned long long 으로 표현 가능 하다?
+    // 999,999 * 999,999 * 999,999 * 6 는 2^64-1 보다 작다, 따라서 total max 값을 uint64_t 으로 표현 가능 하다?
     // 만약 2^64-1 범위를 넘는 경우가 있으면 value 타입을 vector로 변경해야한다.
-    HashMap<int, unsigned long long> range; // -> std::map, 정렬되어있는상태
-    HashMap<std::string, unsigned long long> total;
+    std::map<int, uint64_t> range; // -> std::map, 정렬되어있는상태
+    std::map<std::string, uint64_t> total;
 
     // exam) api/list, api/range, api/check
     // set은 중복되지 않고 정렬되어 있는 상태에 자료구조 이여서 선택
-    SET::Set<std::string> clients;
-    SET::Set<int> u_nums; // 최대 고유 번호 -> 999999
-    Vector<int> miss;
+    std::set<std::string> clients;
+    std::set<int> u_nums; // 최대 고유 번호 -> 999999
+    std::vector<int> miss;
     std::string path;
     std::string date;
 
@@ -72,10 +72,18 @@ public:
         /** 현재 날짜 조회해서 해당 data 가져오기
         date = get_date();
         **/
+        map<std::string ,int> file_to_index={{"09_10.txt",0},
+                                                     {"10_11.txt",1},
+                                                     {"11_12.txt", 2},
+                                                     {"12_13.txt",3},
+                                                     {"13_14.txt", 4},
+                                                     {"14_15.txt",5}};
         // get file list
         try{
             for(const auto& file : std::filesystem::directory_iterator(path+date)){
                 std::ifstream in(file.path().c_str());
+                std::cout << "read file = " << file.path() << std::endl;
+                //int u_index =  file_to_index[file.path().string().substr(path.size()+date.size()+1)];
                 std::stringstream buffer;
                 buffer << in.rdbuf();
                 std::string str;
@@ -98,8 +106,8 @@ public:
                         int volume = atoi(str.substr(16,6).c_str());
                         int price = atoi(str.substr(22,6).c_str());
                         int cal = volume*price;
-                        total.put(id, cal);
-                        range.put(price, volume);
+                        total[id] = (total[id]+cal);
+                        range[price] = (range[price]+volume);
                         clients.insert(id);
                         if(unique_num >= 1){
                             u_nums.insert(unique_num);
@@ -119,7 +127,7 @@ public:
 
 
             // 빈고유번호 찾기
-            SET::Set<int>::Iterator iter = u_nums.begin();
+            std::set<int>::iterator iter = u_nums.begin();
             int step = 1;
             for(; iter != u_nums.end(); ++iter, step++){
                 int current = *iter;
@@ -144,10 +152,10 @@ public:
         }
     }
 
-    HashMap<int, unsigned long long>& get_range(){return range;}; // -> std::map, 정렬되어있는상태
-    HashMap<std::string, unsigned long long>& get_total(){return total;};
-    Vector<int>& get_miss(){return miss;};
-    SET::Set<std::string>& get_clients(){return clients;};
+    std::map<int, uint64_t>& get_range(){return range;}; // -> std::map, 정렬되어있는상태
+    std::map<std::string, uint64_t>& get_total(){return total;};
+    std::vector<int>& get_miss(){return miss;};
+    std::set<std::string>& get_clients(){return clients;};
 
 
 public:
@@ -167,5 +175,6 @@ public:
     }
 
 };
+
 
 #endif //QRAFT_EXCHANGE_API_LOADDATA_H

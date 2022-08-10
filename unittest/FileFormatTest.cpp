@@ -54,6 +54,7 @@ TEST_F(FileFormatTest, LogLengthTest) {
     out << bad_log_length_29+"\n";
     out.close();
     ASSERT_EQ(LoadData::get_instance().init(), false);
+
 }
 
 // 작업고유번호, 체결량, 체결금액이 int가 맞는지?
@@ -66,7 +67,6 @@ TEST_F(FileFormatTest, LogIntFormatTest){
 }
 
 // 최대 total 금액이 unit64_t에 담을수 있는지?
-/** 구현한 set에 bts 검색이 오래걸린다.
 TEST_F(FileFormatTest, MaxTotalTest){
     std::string client_code = "aaaa";
     std::string stocks = "KR0001";
@@ -88,8 +88,8 @@ TEST_F(FileFormatTest, MaxTotalTest){
         out.close();
     }
     LoadData::get_instance().init();
-    uint64_t total = LoadData::get_instance().get_total().get(client_code);
+    uint64_t total = LoadData::get_instance().get_total()[client_code];
     std::cout << total << std::endl;
     ASSERT_TRUE(total < 0xffffffffffffffff);
+    std::filesystem::remove_all(path);
 }
-**/

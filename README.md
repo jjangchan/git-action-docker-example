@@ -19,13 +19,13 @@
 ### docker image pull and run
 
 ```shell
-$ docker pull jjangchan/axe-test-web-server:390c11776738d78263b105763f10594e1667d64f
-$ docker run -p 8091:8091 -it --name jjangchan-test-server jjangchan/axe-test-web-server:390c11776738d78263b105763f10594e1667d64f /bin/bash
+$ docker pull jjangchan/axe-test-web-server:6dcf8d48c5fe1541af58a83c19f2b04adccf1c1e
+$ docker run -p 8091:8091 -it --name jjangchan-test-server jjangchan/axe-test-web-server:6dcf8d48c5fe1541af58a83c19f2b04adccf1c1e /bin/bash
 ```
 
 ### Build (camke and make)
 
-도커 내부 접속후..
+도커 컨테이너 내부 접속후..
 
 ```shell
 $ cd /source/

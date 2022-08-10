@@ -14,7 +14,8 @@ void example(RestServer& server1){
                 }
                 LoadData& data = LoadData::get_instance();
                 std::string id = v[3];
-                uint64_t total = data.get_total().get(id);
+                auto iter = data.get_total().find(id);
+                uint64_t total = (iter == data.get_total().end())? 0 : data.get_total()[id];
                 web::json::value body = web::json::value::object();
 
                 body["client_id"] = web::json::value::string(U(id));
@@ -33,7 +34,7 @@ void example(RestServer& server1){
                 }
                 LoadData& data = LoadData::get_instance();
                 std::vector<web::json::value> send_json;
-                for(SET::Set<std::string>::Iterator iter = data.get_clients().begin(); iter != data.get_clients().end(); ++iter)
+                for(std::set<std::string>::iterator iter = data.get_clients().begin(); iter != data.get_clients().end(); ++iter)
                     send_json.push_back(web::json::value::string(U(*iter)));
                 web::json::value body = web::json::value::object();
                 body[U("clients")] = web::json::value::array(send_json);
@@ -73,15 +74,16 @@ void example(RestServer& server1){
                     return;
                 }
 
-                std::vector<unsigned long long> volumes;
-                unsigned long long v_sum = 0;
-                for(HashMap<int, unsigned long long>::Iterator iter = data.get_range().begin(); iter != data.get_range().begin(); ++iter){
-                    int price = iter.get_key();
+                std::vector<uint64_t> volumes;
+                uint64_t v_sum = 0;
+                std::cout << min << "," << max << std::endl;
+                for(std::map<int, uint64_t>::iterator iter = data.get_range().begin(); iter != data.get_range().end(); ++iter){
+                    int price = iter->first;
                     if(price >= min && price < max){ // N 보다 같거나 크고 M보다 작다
-                        unsigned long long volume = iter.get_value();
+                        uint64_t volume = iter->second;
                         volumes.push_back(volume);
                         v_sum +=  volume;
-                    }
+                    }else if(price >= max) break;
                 }
                 double average = (double)v_sum/(double)volumes.size();
                 double variance = 0;
@@ -121,14 +123,16 @@ void example(RestServer& server1){
 
 }
 
-int main(){
+int main(int argc, char*argv[]){
+
     BoostLogger::get_instance().set_filter(boost::log::trivial::info);
     BOOST_LOG_TRIVIAL(trace) << "BoostLogger is initialized";
 
     LoadData::get_instance().set_path("../datas/", "2022-08-02");
     LoadData::get_instance().init();
 
-    RestServer server1("http://0.0.0.0:8091", 10);
+
+    RestServer server1(argv[1], 10);
     example(server1); // 예제문제 등록하는 함수
     server1.start_server();
 
