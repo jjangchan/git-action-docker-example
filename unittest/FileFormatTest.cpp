@@ -89,7 +89,6 @@ TEST_F(FileFormatTest, MaxTotalTest){
     }
     LoadData::get_instance().init();
     uint64_t total = LoadData::get_instance().get_total()[client_code];
-    std::cout << total << std::endl;
     ASSERT_TRUE(total < 0xffffffffffffffff);
     std::filesystem::remove_all(path);
 }

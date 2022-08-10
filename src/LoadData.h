@@ -25,6 +25,7 @@ public:
         oss << std::put_time(&tm, "%Y-%m-%d");
         return oss.str();
     }
+
 };
 
 class LoadData{
@@ -72,7 +73,7 @@ public:
         /** 현재 날짜 조회해서 해당 data 가져오기
         date = get_date();
         **/
-        map<std::string ,int> file_to_index={{"09_10.txt",0},
+        std::map<std::string ,int> file_to_index={{"09_10.txt",0},
                                                      {"10_11.txt",1},
                                                      {"11_12.txt", 2},
                                                      {"12_13.txt",3},
