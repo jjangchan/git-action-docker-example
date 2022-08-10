@@ -132,6 +132,7 @@ int main(int argc, char*argv[]){
     LoadData::get_instance().init();
 
 
+    
     RestServer server1(argv[1], 10);
     example(server1); // 예제문제 등록하는 함수
     server1.start_server();
