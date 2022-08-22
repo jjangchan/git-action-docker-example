@@ -45,7 +45,7 @@ $ make
 host : 0.0.0.0 , port : 8091
 
 ```shell
-$ ./qraft_exchange_api
+$ ./jjangchan_exchange_api
 ```
 
 
@@ -75,14 +75,14 @@ $ ./unittest
 │     
 ├─ include
 │       ├─ j-boost-logger/BoostLogger.h : 로그를 핸들링 하는 코드
-│       └─  j-curl/CurlHandler.h : curl로 api을 요청하고 결과값을 받는 코드
+│       └─ j-curl/CurlHandler.h : curl로 api을 요청하고 결과값을 받는 코드
 │   
 │
 ├─ .github/workflows/blank.yml : CI, CD를 수행하는 파일
 │
 └─ unittest
         ├─ GetPathTest.cpp : path가 잘 전달되는지 확인하는 테스트 코드
-        └─ CICDTest.cpp
+        ├─ CICDTest.cpp
         └─ FileFormat.cpp
 ```
 

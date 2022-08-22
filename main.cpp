@@ -4,7 +4,7 @@
 
 // api들을 수행하는 콜백 함수 설정, 람다로 표현
 void example(RestServer& server1){
-    //exam1) total
+    // total
     server1.insert_work_call_function(
             "total", [&](http_request req, std::vector<std::string>& v) {
                 if(v.size() > 4 || v.size() < 4){
@@ -24,7 +24,7 @@ void example(RestServer& server1){
                 req.reply(status_codes::OK, body);}
     );
 
-    //exam2) list
+    // list
     server1.insert_work_call_function(
             "list", [&](http_request req, std::vector<std::string>& v) {
                 if(v.size() > 3){
@@ -41,7 +41,7 @@ void example(RestServer& server1){
                 req.reply(status_codes::OK, body);
             });
 
-    //exam3) range -> /api/range/min/max
+    // range -> /api/range/min/max
     server1.insert_work_call_function(
             "range", [&](http_request req, std::vector<std::string>& v) {
                 if(v.size() > 5 || v.size() < 5){
@@ -102,7 +102,7 @@ void example(RestServer& server1){
                 //int total = data.get_total().get(id);
             });
 
-    //exam4) check
+    // check
     server1.insert_work_call_function(
             "check", [&](http_request req, std::vector<std::string>& v) {
                 if(v.size() > 3){
