@@ -1,4 +1,9 @@
-# AXE 벡엔드 엔지니어 샘플 태스크(장경찬)
+# c++ 서버 구축 및 CI/CD 예제
+
+## 목적
+
+- c++ Casablanca 로 rest 서버를 구축해서 요청하는 api를 응답하는 서버 구축
+- git action으로 유닛 테스트가 통과하면 변경된 소스를 도커 이미지로 배포
 
 
 
@@ -70,28 +75,17 @@ $ ./unittest
 │     
 ├─ include
 │       ├─ j-boost-logger/BoostLogger.h : 로그를 핸들링 하는 코드
-│       ├─ j-curl/CurlHandler.h : curl로 api을 요청하고 결과값을 받는 코드
-│       └─ j-data-structure/HashMap.h, LinkerList.h, Set.h, Vector.h : 문제 1-4에 필요한 자료구조를 구현한 코드 
-│
+│       └─  j-curl/CurlHandler.h : curl로 api을 요청하고 결과값을 받는 코드
+│   
 │
 ├─ .github/workflows/blank.yml : CI, CD를 수행하는 파일
 │
 └─ unittest
         ├─ GetPathTest.cpp : path가 잘 전달되는지 확인하는 테스트 코드
-        └─ CICDTest.cpp : 문제2-1에 결과값이 잘 나오는지 확인하는 테스트 코드
-        └─ FileFormat.cpp : 문제1-5 테스트 코드
+        └─ CICDTest.cpp
+        └─ FileFormat.cpp
 ```
 
 
 
 ## 추후 보완해야할점
-
-1. ~~osx에서 작업을 하였는데 도커 이미지를 빌드하는 OS들은 리눅스 계열이라고 알고있습니다..따라서 cmake 패키지들에 경로,버전이 달라서 빌드 오류가 나므로 매크로를 걸어서 패키지 path, 버전 등을 호환할 수 있게 수정해야합니다. 코드 또한 Mac 이랑 유닉스 계열에 gcc가 차이가 있어서 컴파일 오류가 나므로 이점도 매크로를 걸어서 수정해야합니다.~~  
-
-   
-   
-2. ~~문제 1-5에 edge case 파일 과 코드를 구현해야 합니다.~~
-
-
-
-3. ~~2.2 문제에 docker 로그인 과정에서 오류가 발생해서 이 문제를 해결해야 합니다.~~

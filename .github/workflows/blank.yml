@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "master" ]
 
 jobs:
   build:
@@ -46,7 +46,7 @@ jobs:
         id: docker_meta
         uses: crazy-max/ghaction-docker-meta@v2
         with:
-          images: jjangchan/axe-test-web-server
+          images: jjangchan/test-web-server
           tags: | 
             type=raw,value=${{github.sha}},enable=true
 

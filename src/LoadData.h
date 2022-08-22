@@ -46,17 +46,9 @@ private:
     Vector<InfoData> infos;
     **/
 
-    // exam) api/total, api/range
-    // key 값 기준으로 검색해야 하므로, 중복을 허용 하지 않고 최대한 빠르게 검색하는 자료구조는 map(O(logN)) 또는 unordered_map(O(1)) 이여서 hashp_map 선택
-    // 한 고객이 최대 담을수 있는 금액은 아래와 같다
-    // 최대 고유 번호, 체결량, 체결금액 : 999,999 , 최대 파일 생성 개수 : 6 (9-10, 10-11, 11-12, 12-13, 13-14, 14-15, 15-16)
-    // 999,999 * 999,999 * 999,999 * 6 는 2^64-1 보다 작다, 따라서 total max 값을 uint64_t 으로 표현 가능 하다?
-    // 만약 2^64-1 범위를 넘는 경우가 있으면 value 타입을 vector로 변경해야한다.
     std::map<int, uint64_t> range; // -> std::map, 정렬되어있는상태
     std::map<std::string, uint64_t> total;
 
-    // exam) api/list, api/range, api/check
-    // set은 중복되지 않고 정렬되어 있는 상태에 자료구조 이여서 선택
     std::set<std::string> clients;
     std::set<int> u_nums; // 최대 고유 번호 -> 999999
     std::vector<int> miss;
