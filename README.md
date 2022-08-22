@@ -24,8 +24,8 @@
 ### docker image pull and run
 
 ```shell
-$ docker pull jjangchan/axe-test-web-server:6dcf8d48c5fe1541af58a83c19f2b04adccf1c1e
-$ docker run -p 8091:8091 -it --name jjangchan-test-server jjangchan/axe-test-web-server:6dcf8d48c5fe1541af58a83c19f2b04adccf1c1e /bin/bash
+$ docker pull jjangchan/test-web-server:9b555ba883ed2e0789c610c764873f8d270039c7
+$ docker run -p 8091:8091 -it --name jjangchan-test-server jjangchan/test-web-server:9b555ba883ed2e0789c610c764873f8d270039c7 /bin/bash
 ```
 
 ### Build (camke and make)
@@ -45,7 +45,7 @@ $ make
 host : 0.0.0.0 , port : 8091
 
 ```shell
-$ ./jjangchan_exchange_api
+$ ./jjangchan_exchange_api http://0.0.0.0:8091/
 ```
 
 
@@ -62,7 +62,7 @@ $ ./unittest
 ## 디렉터리 정보
 
 ```shell
-/source./qraft-exchange-api
+/source./jjangchan-exchange-api
 │ 
 ├─ main.cpp : 서버 가동 되는 메인함수
 │
